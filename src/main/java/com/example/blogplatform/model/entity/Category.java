@@ -1,6 +1,6 @@
 package com.example.blogplatform.model.entity;
 
-import com.example.blogplatform.entity.Post;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +21,7 @@ public class Category {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(nullable=false, unique=true)
-    private String categoryName;
+    private String name;
     @OneToMany (mappedBy="category")
     private List<Post> posts = new ArrayList<>();
 }
