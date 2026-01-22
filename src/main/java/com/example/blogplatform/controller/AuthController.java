@@ -26,22 +26,12 @@ import java.util.Set;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtAuthUtil jwtAuthUtil;
-    private final AppUserRepository userRepository;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO requestDTO) {
-        Set<String> userRoles = new HashSet<>();
-        userRoles.add("USER");
-        AppUser user = AppUser.builder()
-                .username(requestDTO.getUsername())
-                .password(passwordEncoder.encode(requestDTO.getPassword()))
-                .name(requestDTO.getName())
-                .roles(userRoles)
-                .build();
-
-        userRepository.save(user);
+        userService.createUser(requestDTO);
         return ResponseEntity.ok("User registered");
     }
 
