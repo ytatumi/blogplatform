@@ -32,12 +32,10 @@ public class JwtAuthUtil {
     }
 
     private Claims extractAllClaims(String token){
-        return Jwts.parser().setSigningKey(jwtSecret.getBytes()).parseClaimsJws(token).getBody();
-
- /*       return Jwts.parserBuilder().setSigningKey(jwtSecret.getBytes())
+        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
                 .build()
                 .parseClaimsJws(token)
-                .getBody(); */
+                .getBody();
 
     }
 
@@ -46,8 +44,19 @@ public class JwtAuthUtil {
     }
 
 
-     public List<String> extractRoles(String token) {
+     /* public List<String> extractRoles(String token) {
         return extractAllClaims(token).get("role", List.class);
+    } */
 
+    public List<String> extractRoles(String token) {
+        Object roles = extractAllClaims(token).get("role");
+
+        if (roles instanceof List<?>) {
+            return ((List<?>) roles).stream()
+                    .map(Object::toString)
+                    .toList();
+        }
+
+        return List.of();
     }
 }

@@ -43,8 +43,7 @@ public class UserServiceImpl implements UserService {
                 .name(registerRequestDTO.getName())
                 .roles(userRoles)
                 .build();
-        appUserRepository.save(user);
-        return user;
+        return appUserRepository.save(user);
     }
 
 

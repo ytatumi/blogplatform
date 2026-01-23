@@ -2,10 +2,7 @@ package com.example.blogplatform.model.entity;
 
 import com.example.blogplatform.model.entity.Post;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name="app_users")
+@ToString(exclude = {"posts"})
 public class AppUser {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
