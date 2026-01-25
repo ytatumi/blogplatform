@@ -20,19 +20,28 @@ public class JwtAuthUtil {
     private final String jwtSecret = "supersecretkey1212121233333zxzzxzyyyy1212121";
 
 
-    public String generateToken(String username, String role) {
+    public String generateToken(UserDetails userDetails) {
+        Map<String,Object> claims = new HashMap<>();
 
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("role", List.of(role))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+        claims.put("roles", userDetails
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*5))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
+
+        return token;
     }
 
     private Claims extractAllClaims(String token){
-        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes()))
+        return Jwts.parserBuilder().setSigningKey(jwtSecret.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -44,19 +53,7 @@ public class JwtAuthUtil {
     }
 
 
-     /* public List<String> extractRoles(String token) {
-        return extractAllClaims(token).get("role", List.class);
-    } */
-
     public List<String> extractRoles(String token) {
-        Object roles = extractAllClaims(token).get("role");
-
-        if (roles instanceof List<?>) {
-            return ((List<?>) roles).stream()
-                    .map(Object::toString)
-                    .toList();
-        }
-
-        return List.of();
+        return extractAllClaims(token).get("roles", List.class);
     }
 }

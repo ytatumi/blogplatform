@@ -1,5 +1,6 @@
 package com.example.blogplatform.controller;
 
+import com.example.blogplatform.config.CustomUserDetailService;
 import com.example.blogplatform.model.dto.CreatePostRequestDTO;
 import com.example.blogplatform.model.dto.PostDTO;
 import com.example.blogplatform.model.dto.UpdatePostRequestDTO;
@@ -23,6 +24,7 @@ public class PostController {
 
     private final PostService postService;
     private final UserService userService;
+    private final CustomUserDetailService customUserDetailService;
 
 
     @GetMapping
@@ -37,9 +39,11 @@ public class PostController {
     @PostMapping
     public ResponseEntity<PostDTO> createPost(
             @Valid @RequestBody CreatePostRequestDTO createPostRequestDTO,
-            @AuthenticationPrincipal AppUser loggedInUser
+            @AuthenticationPrincipal String loggedInUser
     ){
-        Post createdPost = postService.createPost(loggedInUser, createPostRequestDTO);
+
+        AppUser user= userService.getUserByUsername (loggedInUser);
+        Post createdPost = postService.createPost(user, createPostRequestDTO);
         PostDTO createdPostDTO = postService.toPostDTO(createdPost);
         return new ResponseEntity<>(createdPostDTO, HttpStatus.CREATED);
     }
