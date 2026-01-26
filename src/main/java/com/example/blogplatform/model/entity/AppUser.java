@@ -2,10 +2,7 @@ package com.example.blogplatform.model.entity;
 
 import com.example.blogplatform.model.entity.Post;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name="app_users")
+@ToString(exclude = {"posts"})
 public class AppUser {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -28,13 +26,9 @@ public class AppUser {
     private String password;
     @Column(nullable=false)
     private String name;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id")
-    )
-    private Set<AppUserRole> roles;
+
+    private Set<String> roles;
+
     @OneToMany(mappedBy="author", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 

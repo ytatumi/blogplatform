@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(Category category) {
         String categoryName= category.getName();
         if(categoryRepository.existsByNameIgnoreCase(categoryName)){
-            throw new IllegalArgumentException("Category already exists" + categoryName);
+            throw new IllegalArgumentException("Category already exists " + categoryName);
         }
         return categoryRepository.save(category);
 
@@ -48,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getCategoryById(Long id) {
         return categoryRepository.findById(id).
-                orElseThrow(()->new EntityNotFoundException("Category not found with id" + id));
+                orElseThrow(()->new EntityNotFoundException("Category not found with id " + id));
     }
 
     @Override
