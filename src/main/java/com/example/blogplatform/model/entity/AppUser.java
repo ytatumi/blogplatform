@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +28,7 @@ public class AppUser {
     @Column(nullable=false)
     private String name;
 
-    private Set<String> roles;
+    private Set<String> roles = new HashSet<String>();
 
     @OneToMany(mappedBy="author", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();

@@ -3,6 +3,7 @@ package com.example.blogplatform.service;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.repository.AppUserRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,6 +20,11 @@ public class UserServiceImpl implements UserService {
 
     private final AppUserRepository appUserRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<AppUser> findAllUser() {
+        return appUserRepository.findAll();
+    }
 
     @Override
     public AppUser getUserById(Long userId) {
@@ -37,6 +44,9 @@ public class UserServiceImpl implements UserService {
     public AppUser createUser(RegisterRequestDTO registerRequestDTO) {
         Set<String> userRoles = new HashSet<>();
         userRoles.add("USER");
+        if (appUserRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
+           throw new EntityExistsException("User already exists!");
+        };
         AppUser user = AppUser.builder()
                 .username(registerRequestDTO.getUsername())
                 .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
@@ -45,6 +55,28 @@ public class UserServiceImpl implements UserService {
                 .build();
         return appUserRepository.save(user);
     }
+
+    @Override
+    public AppUser createAdmin(RegisterRequestDTO registerRequestDTO) {
+        AppUser existingUser= appUserRepository.findByUsername(registerRequestDTO.getUsername()).orElse(null);
+
+        if(existingUser!=null){
+            existingUser.getRoles().add("ADMIN");
+            return appUserRepository.save(existingUser);
+        }
+
+        Set<String> userRoles = new HashSet<>();
+        userRoles.add("ADMIN");
+        AppUser user = AppUser.builder()
+                .username(registerRequestDTO.getUsername())
+                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
+                .name(registerRequestDTO.getName())
+                .roles(userRoles)
+                .build();
+        return appUserRepository.save(user);
+
+    }
+
 
 
 }

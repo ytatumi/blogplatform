@@ -1,17 +1,16 @@
 package com.example.blogplatform.controller;
 
+import com.example.blogplatform.config.CustomUserDetailService;
 import com.example.blogplatform.config.JwtAuthUtil;
 import com.example.blogplatform.model.dto.LoginRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
-import com.example.blogplatform.model.entity.AppUser;
-import com.example.blogplatform.repository.AppUserRepository;
 import com.example.blogplatform.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +26,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtAuthUtil jwtAuthUtil;
     private final UserService userService;
+    private final CustomUserDetailService UserdetailService;
 
 
     @PostMapping("/register")
@@ -35,18 +35,26 @@ public class AuthController {
         return ResponseEntity.ok("User registered");
     }
 
+    @PostMapping("/adminregister")
+    public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
+        userService.createAdmin(requestDTO);
+        return ResponseEntity.ok("Admin registered");
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
-        AppUser user = userService.getUserByUsername(request.getUsername());
 
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
 
-        String jwt = jwtAuthUtil.generateToken(user.getUsername(),"USER");
+        UserDetails user = UserdetailService.loadUserByUsername(request.getUsername());
+
+
+        String jwt = jwtAuthUtil.generateToken(user);
 
         return ResponseEntity.ok(jwt);
     }
