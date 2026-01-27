@@ -2,14 +2,13 @@ package com.example.blogplatform.model.entity;
 
 import com.example.blogplatform.model.PostStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -35,6 +34,9 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="category_id", nullable = false)
     private Category category;
+
+    @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

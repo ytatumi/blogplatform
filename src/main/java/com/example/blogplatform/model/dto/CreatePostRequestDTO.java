@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,5 +29,7 @@ public class CreatePostRequestDTO {
 
     @NotNull(message="Status is required")
     private PostStatus status;
+
+    private Set<Long> reviewIds;
 
 }
