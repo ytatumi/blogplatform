@@ -72,5 +72,23 @@ public class PostController {
 
     }
 
+    @GetMapping("/drafts")
+    public ResponseEntity<List<PostDTO>> getDrafts
+            (@AuthenticationPrincipal String loggedInUser,
+             @RequestParam(required=false) Long categoryId){
+        AppUser author= userService.getUserByUsername (loggedInUser);
+        List<Post> draftPosts = postService.getDrafts(author,categoryId);
+        List<PostDTO>postDTOs = draftPosts.stream().map(postService::toPostDTO).toList();
+        return ResponseEntity.ok(postDTOs);
+    }
+
+    @PutMapping("/drafts/publish/{id}")
+    public ResponseEntity<PostDTO> publishDraftPost
+            (@PathVariable Long id, @AuthenticationPrincipal String loggedInUser){
+        AppUser user= userService.getUserByUsername (loggedInUser);
+        PostDTO dtoToPublish =postService.publishDraft(id, user);
+        return ResponseEntity.ok(dtoToPublish);
+    }
+
 
 }
