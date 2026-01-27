@@ -4,6 +4,7 @@ import com.example.blogplatform.model.PostStatus;
 import com.example.blogplatform.model.dto.*;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.model.entity.Category;
+import com.example.blogplatform.model.entity.Comment;
 import com.example.blogplatform.model.entity.Post;
 import com.example.blogplatform.repository.CategoryRepository;
 import com.example.blogplatform.repository.PostRepository;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ import java.util.List;
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
     private final CategoryService categoryService;
+    private final CommentService commentService;
 
 
     @Override
@@ -55,6 +60,7 @@ public class PostServiceImpl implements PostService{
         if (user == null) {
             throw new IllegalStateException("Authenticated user is missing");
         }
+
         Post newPost = Post.builder()
                 .title(createPostRequestDTO.getTitle())
                 .content(createPostRequestDTO.getContent())
@@ -63,6 +69,7 @@ public class PostServiceImpl implements PostService{
                         : PostStatus.DRAFT)
                 .author(user)
                 .category(categoryService.getCategoryById(createPostRequestDTO.getCategoryId()))
+                .comments(new HashSet<>())
                 .build();
         return postRepository.save(newPost);
     }
@@ -76,7 +83,7 @@ public class PostServiceImpl implements PostService{
         postToUpdate.setContent(updatePostRequestDTO.getContent());
         postToUpdate.setStatus(updatePostRequestDTO.getStatus());
         Long updatePostRequestCategoryId = updatePostRequestDTO.getCategoryId();
-        if(updatePostRequestCategoryId!=postToUpdate.getCategory().getId()) {
+        if(!updatePostRequestCategoryId.equals(postToUpdate.getCategory().getId())) {
             Category updatedCategory = categoryService.getCategoryById(updatePostRequestCategoryId);
             postToUpdate.setCategory(updatedCategory);
         }
@@ -93,7 +100,9 @@ public class PostServiceImpl implements PostService{
                 .category(new CategoryDTO(post.getCategory().getId(), post.getCategory().getName()))
                 .createdAt(post.getCreatedAt())
                 .updatedAt(post.getUpdatedAt())
-                .postStatus(post.getStatus()).build();
+                .postStatus(post.getStatus())
+                .comments(post.getComments().stream().map(Comment::getContent).collect(Collectors.toSet()))
+                .build();
 
     }
 }
