@@ -6,6 +6,7 @@ import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.model.entity.Category;
 import com.example.blogplatform.model.entity.Comment;
 import com.example.blogplatform.model.entity.Post;
+import com.example.blogplatform.repository.AppUserRepository;
 import com.example.blogplatform.repository.CategoryRepository;
 import com.example.blogplatform.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
+    private final AppUserRepository userRepository;
     private final CategoryService categoryService;
     private final CommentService commentService;
 
@@ -40,6 +42,21 @@ public class PostServiceImpl implements PostService{
 
         }
         return postRepository.findAllByStatus(PostStatus.PUBLISHED);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Post> getDrafts(AppUser author, Long categoryId) {
+        if(categoryId != null) {
+            Category category = categoryService.getCategoryById(categoryId);
+            return postRepository.findAllByAuthorAndStatusAndCategory(
+                    author,
+                    PostStatus.DRAFT,
+                    category
+            );
+
+        }
+        return postRepository.findAllByAuthorAndStatus(author,PostStatus.DRAFT);
     }
 
     @Override
@@ -88,6 +105,17 @@ public class PostServiceImpl implements PostService{
             postToUpdate.setCategory(updatedCategory);
         }
         return postRepository.save(postToUpdate);
+    }
+
+    @Override
+    public PostDTO publishDraft(Long id, AppUser user) {
+        Post postToPublish = getPostById(id);
+        if(!user.equals(postToPublish.getAuthor())){
+            throw new IllegalStateException("User is not the author of this post");
+        }
+        postToPublish.setStatus(PostStatus.PUBLISHED);
+       ;
+        return  toPostDTO(postRepository.save(postToPublish));
     }
 
     @Override
