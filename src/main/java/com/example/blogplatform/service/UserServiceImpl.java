@@ -1,5 +1,6 @@
 package com.example.blogplatform.service;
 
+import com.example.blogplatform.model.Role;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.repository.AppUserRepository;
@@ -42,8 +43,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public AppUser createUser(RegisterRequestDTO registerRequestDTO) {
-        Set<String> userRoles = new HashSet<>();
-        userRoles.add("USER");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(Role.USER);
         if (appUserRepository.findByUsername(registerRequestDTO.getUsername()).isPresent()){
            throw new EntityExistsException("User already exists!");
         };
@@ -61,12 +62,12 @@ public class UserServiceImpl implements UserService {
         AppUser existingUser= appUserRepository.findByUsername(registerRequestDTO.getUsername()).orElse(null);
 
         if(existingUser!=null){
-            existingUser.getRoles().add("ADMIN");
+            existingUser.getRoles().add(Role.ADMIN);
             return appUserRepository.save(existingUser);
         }
 
-        Set<String> userRoles = new HashSet<>();
-        userRoles.add("ADMIN");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(Role.ADMIN);
         AppUser user = AppUser.builder()
                 .username(registerRequestDTO.getUsername())
                 .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
