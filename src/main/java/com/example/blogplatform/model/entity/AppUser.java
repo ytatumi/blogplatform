@@ -16,7 +16,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name="app_users")
-@ToString(exclude = {"posts"})
+@ToString(exclude = {"posts", "roles"})
 public class AppUser {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -28,16 +28,16 @@ public class AppUser {
     @Column(nullable=false)
     private String name;
 
-    private Set<String> roles = new HashSet<String>();
+    private Set<String> roles;
 
     @OneToMany(mappedBy="author", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @Column(nullable=false)
+    @Column(nullable=false, updatable=false)
     private LocalDateTime createdAt;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 }
