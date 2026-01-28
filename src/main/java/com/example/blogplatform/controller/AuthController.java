@@ -32,14 +32,15 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO requestDTO) {
         userService.createUser(requestDTO);
-        return ResponseEntity.ok("User registered");
+        return ResponseEntity.ok("User is registered successfully");
     }
 
+    /*
     @PostMapping("/adminregister")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
         userService.createAdmin(requestDTO);
-        return ResponseEntity.ok("Admin registered");
-    }
+        return ResponseEntity.ok("Admin is registered");
+    } */
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
