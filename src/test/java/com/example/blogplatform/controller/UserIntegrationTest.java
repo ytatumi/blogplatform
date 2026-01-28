@@ -1,5 +1,6 @@
 package com.example.blogplatform.controller;
 
+import com.example.blogplatform.model.Role;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class UserIntegrationTest {
                 .username("testuser")
                 .password(passwordEncoder.encode("testuserpassword123"))
                 .name("testuser fullname")
-                .roles(Set.of("USER"))
+                .roles(Set.of(Role.USER))
                 .build();
         appUserRepository.save(appUser);
 

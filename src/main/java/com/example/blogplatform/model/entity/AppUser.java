@@ -1,5 +1,6 @@
 package com.example.blogplatform.model.entity;
 
+import com.example.blogplatform.model.Role;
 import com.example.blogplatform.model.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,7 +30,14 @@ public class AppUser {
     @Column(nullable=false)
     private String name;
 
-    private Set<String> roles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy="author", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
