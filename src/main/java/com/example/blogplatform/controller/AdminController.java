@@ -29,7 +29,7 @@ public class AdminController {
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
         userService.createAdmin(requestDTO);
-        return ResponseEntity.ok("Admin registered");
+        return ResponseEntity.ok("Admin is registered successfully");
     }
 
 
