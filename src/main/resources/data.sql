@@ -5,3 +5,15 @@ INSERT INTO user_roles (user_id, role)
 SELECT id, 'ADMIN'
 FROM app_users
 WHERE username = 'admin';
+
+INSERT IGNORE INTO category(name) VALUES
+('News'),
+('Sports'),
+('Book'),
+('Music'),
+('Film'),
+('Health'),
+('Food'),
+('Travel'),
+('Business'),
+('Politics');

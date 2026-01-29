@@ -4,6 +4,7 @@ import com.example.blogplatform.model.dto.CategoryDTO;
 import com.example.blogplatform.model.dto.CreateCategoryRequestDTO;
 import com.example.blogplatform.model.entity.Category;
 import com.example.blogplatform.repository.CategoryRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(Category category) {
         String categoryName= category.getName();
         if(categoryRepository.existsByNameIgnoreCase(categoryName)){
-            throw new IllegalArgumentException("Category already exists " + categoryName);
+            throw new EntityExistsException("Category already exists " + categoryName);
         }
         return categoryRepository.save(category);
 
@@ -39,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         if(category.isPresent()){
             if(category.get().getPosts().size() > 0){
-                throw new IllegalArgumentException("Category has posts");
+                throw new EntityExistsException("Category has posts");
             }
             categoryRepository.deleteById(id);
         }
