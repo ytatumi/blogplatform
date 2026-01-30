@@ -82,7 +82,7 @@ public class PostController {
         return ResponseEntity.ok(postDTOs);
     }
 
-    @PutMapping("/drafts/publish/{id}")
+    @PutMapping("/drafts/{id}")
     public ResponseEntity<PostDTO> publishDraftPost
             (@PathVariable Long id, @AuthenticationPrincipal String loggedInUser){
         AppUser user= userService.getUserByUsername (loggedInUser);

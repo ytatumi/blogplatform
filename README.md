@@ -99,7 +99,7 @@ http://localhost:8080
 
 #### Register User 
 
-**POST** `/api/auth/register`
+**POST** `/api/auth/users`
 
 ```json
 {
@@ -184,14 +184,14 @@ http://localhost:8080
 
 #### Publish a Draft
 
-**PUT** `/api/posts/drafts/publish/{id}`
+**PUT** `/api/posts/drafts/{id}`
 
 
 ### Comments  (JWT Authentification required)
 
 #### Add comment to post
 
-**POST** `/api/post/comments`
+**POST** `/api/comments`
 
 ```json
 {
@@ -202,23 +202,21 @@ http://localhost:8080
 
 ### Category  (JWT Authentification required)
 
-#### View All User information
-
-**GET** `/api/admin`
-
 #### Add category
 
 **POST** `/api/categories
 
 ```json
 {
-  "categoryName":"Sports"
+  "categoryName":"Art"
 }
 ```
 #### Delete category
 
 **DELETE** `/api/categories/{id}`
+
 ___
+
 ### ONLY FOR ADMIN  (JWT Authentification "ADMIN" is required. Needs to be registered as "ADMIN" required beforehand.)
 
 #### View All User information 
@@ -243,6 +241,7 @@ mvn test
 * Simplified role and authorization handling
 * No frontend – backend/API only
 * No JWT refresh tokens (access token only)
+
 
 
 ---

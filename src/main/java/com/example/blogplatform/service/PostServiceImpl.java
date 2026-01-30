@@ -11,6 +11,7 @@ import com.example.blogplatform.repository.CategoryRepository;
 import com.example.blogplatform.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,7 +62,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Post getPostById(Long id) {
-        return postRepository.findById(id)
+        return postRepository.findByIdAndStatus(id,PostStatus.PUBLISHED)
                 .orElseThrow(()->new EntityNotFoundException("Post does not exist with id: " + id));
     }
 
@@ -108,13 +109,14 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
+    @Transactional
     public PostDTO publishDraft(Long id, AppUser user) {
-        Post postToPublish = getPostById(id);
+        Post postToPublish = postRepository.findByIdAndStatus(id,PostStatus.DRAFT)
+                .orElseThrow(()->new EntityNotFoundException("Draft does not exist with id: " + id));;
         if(!user.equals(postToPublish.getAuthor())){
-            throw new IllegalStateException("User is not the author of this post");
+            throw new AccessDeniedException("You can not see/publish other users' drafts.");
         }
         postToPublish.setStatus(PostStatus.PUBLISHED);
-       ;
         return  toPostDTO(postRepository.save(postToPublish));
     }
 

@@ -26,7 +26,7 @@ public class AdminController {
         return ResponseEntity.ok(userService.findAllUser());
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
         userService.createAdmin(requestDTO);
         return ResponseEntity.ok("Admin is registered successfully");
