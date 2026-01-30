@@ -1,6 +1,7 @@
 package com.example.blogplatform.service;
 import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
+import com.example.blogplatform.model.dto.UserListDTO;
 import com.example.blogplatform.model.entity.AppUser;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public interface UserService {
     List<AppUser> findAllUser();
+    List<UserListDTO> findAllUserList();
     AppUser getUserById(Long userId);
     AppUser getUserByUsername(String username);
     AppUser createUser(RegisterRequestDTO registerRequestDTO);

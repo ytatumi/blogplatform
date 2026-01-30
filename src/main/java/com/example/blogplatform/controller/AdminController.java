@@ -3,6 +3,7 @@ package com.example.blogplatform.controller;
 import com.example.blogplatform.config.JwtAuthUtil;
 import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
+import com.example.blogplatform.model.dto.UserListDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<AppUser>> GetAllUser()
+    public ResponseEntity<List<UserListDTO>> GetAllUser()
     {
-        return ResponseEntity.ok(userService.findAllUser());
+        return ResponseEntity.ok(userService.findAllUserList());
     }
 
     @PostMapping

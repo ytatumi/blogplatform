@@ -3,6 +3,7 @@ package com.example.blogplatform.service;
 import com.example.blogplatform.model.Role;
 import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
+import com.example.blogplatform.model.dto.UserListDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.repository.AppUserRepository;
 import jakarta.persistence.EntityExistsException;
@@ -27,6 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<AppUser> findAllUser() {
         return appUserRepository.findAll();
+    }
+
+    @Override
+    public List<UserListDTO> findAllUserList() {
+        return appUserRepository.findAllUserList();
     }
 
     @Override
