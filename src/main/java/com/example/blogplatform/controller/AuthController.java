@@ -29,7 +29,7 @@ public class AuthController {
     private final CustomUserDetailService UserdetailService;
 
 
-    @PostMapping("/register")
+    @PostMapping("/users")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO requestDTO) {
         userService.createUser(requestDTO);
         return ResponseEntity.ok("User is registered successfully");

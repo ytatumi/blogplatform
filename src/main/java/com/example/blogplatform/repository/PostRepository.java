@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post,Long> {
@@ -15,7 +16,5 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     List<Post> findAllByStatus(PostStatus postStatus);
     List<Post> findAllByAuthorAndStatusAndCategory(AppUser author, PostStatus postStatus, Category category);
     List<Post> findAllByAuthorAndStatus(AppUser author,PostStatus postStatus);
-
-
-
+    Optional<Post> findByIdAndStatus(Long aLong, PostStatus postStatus);
 }

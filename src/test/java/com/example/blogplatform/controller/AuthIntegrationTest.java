@@ -28,7 +28,7 @@ public class AuthIntegrationTest {
 
     @Test
     void register_then_login_shouldWork() throws Exception {
-        mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""
                         {  
