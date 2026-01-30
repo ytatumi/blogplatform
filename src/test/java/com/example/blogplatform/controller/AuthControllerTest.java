@@ -48,7 +48,7 @@ public class AuthControllerTest {
                 "name": "test user"
                 }
                 """;
-        mockMvc.perform(post("/api/auth/register")
+        mockMvc.perform(post("/api/auth/users")
         .contentType(MediaType.APPLICATION_JSON)
                 .content(registerRequest))
                 .andExpect(status().isOk())
