@@ -1,6 +1,7 @@
 package com.example.blogplatform.controller;
 
 import com.example.blogplatform.config.JwtAuthUtil;
+import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.service.UserService;
@@ -27,7 +28,7 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
+    public ResponseEntity<?> createAdmin(@RequestBody AdminRegisterRequestDTO requestDTO) {
         userService.createAdmin(requestDTO);
         return ResponseEntity.ok("Admin is registered successfully");
     }

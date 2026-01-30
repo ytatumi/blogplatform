@@ -1,6 +1,6 @@
 package com.example.blogplatform.model.dto;
 
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegisterRequestDTO {
+    @NotBlank(message="username is required")
     private String username;
-    @Column(nullable=false)
+    @NotBlank(message="password is required")
     private String password;
-    @Column(nullable=false)
+    @NotBlank(message="name is required")
     private String name;
 
 }

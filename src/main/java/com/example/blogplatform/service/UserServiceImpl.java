@@ -1,6 +1,7 @@
 package com.example.blogplatform.service;
 
 import com.example.blogplatform.model.Role;
+import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
 import com.example.blogplatform.model.dto.RegisterRequestDTO;
 import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.repository.AppUserRepository;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -58,22 +60,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public AppUser createAdmin(RegisterRequestDTO registerRequestDTO) {
-        AppUser existingUser= appUserRepository.findByUsername(registerRequestDTO.getUsername()).orElse(null);
+    @Transactional
+    public AppUser createAdmin(AdminRegisterRequestDTO registerRequestDTO) {
+        AppUser user= appUserRepository.findByUsername(registerRequestDTO.getUsername())
+                .orElseThrow(()->new EntityNotFoundException("User not found: " + registerRequestDTO.getUsername()));
 
-        if(existingUser!=null){
-            existingUser.getRoles().add(Role.ADMIN);
-            return appUserRepository.save(existingUser);
-        }
-
-        Set<Role> userRoles = new HashSet<>();
-        userRoles.add(Role.ADMIN);
-        AppUser user = AppUser.builder()
-                .username(registerRequestDTO.getUsername())
-                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
-                .name(registerRequestDTO.getName())
-                .roles(userRoles)
-                .build();
+        user.getRoles().add(Role.ADMIN);
         return appUserRepository.save(user);
 
     }
