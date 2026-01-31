@@ -223,6 +223,16 @@ ___
 
 **GET** `/api/admin`
 
+#### Register User as Admin
+
+**POST** `/api/auth/users`
+
+```json
+{
+  "username": "user"
+}
+```
+
 ---
 
 ## Testing
