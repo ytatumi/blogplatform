@@ -33,7 +33,9 @@ public class AppUser {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id")
+            joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = {"user_id", "role"})
     )
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -42,7 +44,7 @@ public class AppUser {
     @OneToMany(mappedBy="author", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts = new ArrayList<>();
 
-    @Column(nullable=false, updatable=false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
