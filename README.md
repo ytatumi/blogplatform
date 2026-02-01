@@ -88,7 +88,7 @@ http://localhost:8080
 * Docker
 * Docker Compose
 
-1. Create a `.env` file (not committed to Git) based on `env.example. (example):
+1. Create a `.env` file (not committed to Git) based on `env.example`:
 
 
 ```env
@@ -104,7 +104,7 @@ PORT_TO_EXPOSE=8080
 docker-compose up --build
 ```
 
-3. The API is exposed on the host machine at the port defined by `PORT_TO_EXPOSE`(example:8080).
+3. The API is exposed on the host machine at the port defined by `PORT_TO_EXPOSE`.
 
 ```
 http://localhost:8080
@@ -271,4 +271,5 @@ mvn test
 * No JWT refresh tokens (access token only)
 
 ---
+
 
