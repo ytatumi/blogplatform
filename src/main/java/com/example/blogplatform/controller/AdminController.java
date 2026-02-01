@@ -1,14 +1,10 @@
 package com.example.blogplatform.controller;
 
-import com.example.blogplatform.config.JwtAuthUtil;
 import com.example.blogplatform.model.dto.AdminRegisterRequestDTO;
-import com.example.blogplatform.model.dto.RegisterRequestDTO;
 import com.example.blogplatform.model.dto.UserListDTO;
-import com.example.blogplatform.model.entity.AppUser;
 import com.example.blogplatform.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtAuthUtil jwtAuthUtil;
     private final UserService userService;
 
     @GetMapping

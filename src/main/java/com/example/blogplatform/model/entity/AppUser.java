@@ -1,7 +1,6 @@
 package com.example.blogplatform.model.entity;
 
 import com.example.blogplatform.model.Role;
-import com.example.blogplatform.model.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
 

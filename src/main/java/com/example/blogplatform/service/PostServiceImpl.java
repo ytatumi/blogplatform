@@ -7,7 +7,6 @@ import com.example.blogplatform.model.entity.Category;
 import com.example.blogplatform.model.entity.Comment;
 import com.example.blogplatform.model.entity.Post;
 import com.example.blogplatform.repository.AppUserRepository;
-import com.example.blogplatform.repository.CategoryRepository;
 import com.example.blogplatform.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +14,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,9 +23,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
-    private final AppUserRepository userRepository;
     private final CategoryService categoryService;
-    private final CommentService commentService;
 
 
     @Override
@@ -112,7 +107,7 @@ public class PostServiceImpl implements PostService{
     @Transactional
     public PostDTO publishDraft(Long id, AppUser user) {
         Post postToPublish = postRepository.findByIdAndStatus(id,PostStatus.DRAFT)
-                .orElseThrow(()->new EntityNotFoundException("Draft does not exist with id: " + id));;
+                .orElseThrow(()->new EntityNotFoundException("Draft does not exist with id: " + id));
         if(!user.equals(postToPublish.getAuthor())){
             throw new AccessDeniedException("You can not see/publish other users' drafts.");
         }

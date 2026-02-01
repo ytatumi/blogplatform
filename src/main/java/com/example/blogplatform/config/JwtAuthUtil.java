@@ -1,6 +1,5 @@
 package com.example.blogplatform.config;
 
-import com.example.blogplatform.model.entity.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,15 +28,13 @@ public class JwtAuthUtil {
                 .map(GrantedAuthority::getAuthority)
                 .toList());
 
-        String token = Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000*60*5))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
-
-        return token;
     }
 
     private Claims extractAllClaims(String token){

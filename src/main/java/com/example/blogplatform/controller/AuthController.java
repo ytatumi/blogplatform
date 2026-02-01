@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
-import java.util.Set;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -35,12 +34,6 @@ public class AuthController {
         return ResponseEntity.ok("User is registered successfully");
     }
 
-    /*
-    @PostMapping("/adminregister")
-    public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequestDTO requestDTO) {
-        userService.createAdmin(requestDTO);
-        return ResponseEntity.ok("Admin is registered");
-    } */
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO request) {
