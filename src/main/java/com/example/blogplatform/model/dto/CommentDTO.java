@@ -1,6 +1,5 @@
 package com.example.blogplatform.model.dto;
 
-import com.example.blogplatform.model.entity.AppUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -37,9 +37,8 @@ public class CustomUserDetailService implements UserDetailsService {
 
     public String extractCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            String currentUserName = authentication.getName();
-            return currentUserName;
+        if (!(authentication instanceof AnonymousAuthenticationToken) && authentication != null) {
+            return authentication.getName();
         }
         return null;
     }
