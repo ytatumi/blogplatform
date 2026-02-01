@@ -1,9 +1,27 @@
 #  Blog Platform API
 
 ## Project Description 
-This project aims to develop a backend system for a blog platform.
-The API allows users to register, login, read/publish blog posts and comments.
-It is developed with Spring boot and uses JWT for authentification
+This project aims to develop a backend system for a blog platform. 
+
+The API provides a way for users to register, login and read/publish blog posts and comments.
+
+It is developed with Spring boot and uses JWT for authentification.
+
+## Currently Available Main Features
+
+### For User
+* **Registration/Sign up** 
+* **Login/Sign in**
+* **Draft Post**
+* **View a list of their own Draft Post**
+* **Publish/Update/Delete Post**
+* **Read All Posts**  
+* **Post Comments**
+
+### For Admin
+* **View a List of Users**
+* **Register User As Admin** (Give users Admin role)  
+
 
 ## Technology Stack 
 The project is built using the following technologies and frameworks:
@@ -251,8 +269,6 @@ mvn test
 * Simplified role and authorization handling
 * No frontend – backend/API only
 * No JWT refresh tokens (access token only)
-
-
 
 ---
 
