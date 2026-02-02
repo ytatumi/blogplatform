@@ -9,9 +9,11 @@ It is developed with Spring boot and uses JWT for authentification.
 
 ## Currently Available Main Features
 
-### For User
+### For Anyone
 * **Registration/Sign up** 
 * **Login/Sign in**
+
+### For User
 * **Draft Post**
 * **View a list of their own Draft Post**
 * **Publish/Update/Delete Post**
@@ -183,7 +185,7 @@ http://localhost:8080
 
 **DELETE** `/api/posts/{id}`
 
----
+
 #### Create a draft 
 
 **POST** `/api/posts`
@@ -196,6 +198,7 @@ http://localhost:8080
   "status": "DRAFT"
 }
 ```
+
 #### Get all draft that logged in user created 
 
 **GET** `/api/posts/drafts`
@@ -204,6 +207,7 @@ http://localhost:8080
 
 **PUT** `/api/posts/drafts/{id}`
 
+---
 
 ### Comments  (JWT Authentification required)
 
@@ -217,6 +221,7 @@ http://localhost:8080
   "content": "Great post!"
 }
 ```
+___
 
 ### Category  (JWT Authentification required)
 
@@ -235,7 +240,8 @@ http://localhost:8080
 
 ___
 
-### ONLY FOR ADMIN  (JWT Authentification "ADMIN" is required. Needs to be registered as "ADMIN" required beforehand.)
+### ONLY FOR ADMIN  
+(JWT Authentification "ADMIN" is required. Needs to be registered as "ADMIN" beforehand.)
 
 #### View All User information 
 
@@ -270,6 +276,6 @@ mvn test
 * No frontend – backend/API only
 * No JWT refresh tokens (access token only)
 
----
+
 
 

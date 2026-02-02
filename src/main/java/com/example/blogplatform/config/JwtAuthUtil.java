@@ -32,7 +32,7 @@ public class JwtAuthUtil {
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*5))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000*60*30))
                 .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS256)
                 .compact();
     }
